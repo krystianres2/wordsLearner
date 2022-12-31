@@ -3,6 +3,7 @@ package Others;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public interface Others {
     public static boolean MapContainsArray(String @NotNull [] tab, HashMap<Integer,Integer> map){
@@ -52,8 +53,13 @@ public interface Others {
                 sb.append(",");
             }
         }
-        String str = sb.toString();
-        return str;//przykładowy output: 1,2,3,4
+        return sb.toString();//przykładowy output: 1,2,3,4
     }//strArrayToStringSepByCommas
+
+    public static int randomInt(int min, int max){
+        Random random = new Random();
+        return random.nextInt((max - min) + 1) + min;
+    }//randomInt
+
 
 }

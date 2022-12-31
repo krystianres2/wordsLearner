@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnector extends Row {
-    private static String DB_URL="jdbc:sqlite:Words";//adres URL bazy
+    private final static String DB_URL="jdbc:sqlite:Words";//adres URL bazy
 
     static Connection conn;//do przechwytywania connection
 
