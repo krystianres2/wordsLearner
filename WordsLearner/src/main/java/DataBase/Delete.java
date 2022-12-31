@@ -16,8 +16,7 @@ public class Delete extends Select{
     public static void deleteRow(String tableName){
         int Id=0;//ID wiersza
         int i=1;//klucz HashMap
-        HashMap<Integer,Integer> map=new HashMap<>();
-        map=Select.IdToHashMap(tableName);
+        HashMap<Integer,Integer> map=Select.IdToHashMap(tableName);
         showAllWordsWithIncrementedID(tableName);
         try {
             System.out.println("Podaj numer rekordu który chcesz usunąć");

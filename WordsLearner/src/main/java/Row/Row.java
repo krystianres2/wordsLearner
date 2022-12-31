@@ -1,10 +1,10 @@
 package Row;
 
 public class Row {
-    private int ID;//ID rekordu w bazie
-    private String wordPl;
-    private String wordEng;
-    private byte goodAnswers;// ilość poprawnych odpowiedzi
+    private int ID=0;//ID rekordu w bazie
+    private String wordPl="";
+    private String wordEng="";
+    public byte goodAnswers=0;// ilość poprawnych odpowiedzi
 
     public int getID() {
         return ID;

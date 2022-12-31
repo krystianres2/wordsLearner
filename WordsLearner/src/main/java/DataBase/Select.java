@@ -1,7 +1,10 @@
 package DataBase;
 
+import Row.Row;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Select extends DbConnector implements QueryExecutor{
@@ -43,4 +46,22 @@ protected static HashMap<Integer,Integer> IdToHashMap(String tableName)  {//uży
             System.out.println("Błąd bazy danych");
         }
     }//showAllWordsWithRealID
+
+    public static ArrayList<Row> saveToList(String tableName){
+        ArrayList<Row> list= new ArrayList<>();
+        try {
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM " +tableName);
+            while (result.next()){
+             Row obj=new Row();
+                obj.setWordPl(result.getString("wordPL"));
+                obj.setWordEng(result.getString("wordENG"));
+                list.add(obj);
+            }
+        }catch (SQLException e){
+            System.out.printf("Błąd bazy danych");
+        }
+        return list;
+    }//saveToList
+
+
 }
