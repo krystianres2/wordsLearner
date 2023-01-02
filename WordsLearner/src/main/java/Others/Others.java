@@ -2,6 +2,9 @@ package Others;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -61,5 +64,16 @@ public interface Others {
         return random.nextInt((max - min) + 1) + min;
     }//randomInt
 
+    public static String getFileType(String fileName){
+        String fileType = "Undetermined";
+        final File file = new File(fileName);
+        try{
+            fileType = Files.probeContentType(file.toPath());
+        }
+        catch (IOException ioException){
+            System.out.println("File type not detected for " + fileName);
+        }
+        return fileType;
+    }
 
 }

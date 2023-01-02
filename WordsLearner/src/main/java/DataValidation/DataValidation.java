@@ -1,12 +1,18 @@
 package DataValidation;
 
+import Excel.Excel;
 import Exceptions.IncorrectValue;
 import Exceptions.InputDoesNotMatchToRegex;
+import Others.Others;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public interface DataValidation {
+public interface DataValidation extends Others {
 
     static byte ByteValidation(byte min,byte max) {
         byte num = 0;
@@ -57,7 +63,7 @@ public interface DataValidation {
         String regex = "^[a-zA-Z ]+$";
         Scanner input = new Scanner(System.in);
         boolean valid = false;
-        while (!valid||pom.length()<2) {
+        while (!valid||pom.length()<1) {
             try {
                 pom = input.nextLine();
                 valid = true;
@@ -78,11 +84,11 @@ public interface DataValidation {
         String regex = "^(?=\\S)[\\p{L}\\s]*[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]?[\\p{L}\\s]*\\S$";
         Scanner input = new Scanner(System.in);
         boolean valid = false;
-        while (!valid) {
+        while (!valid||pom.length()<1) {
             try {
                 pom = input.nextLine();
                 valid = true;
-                if (!pom.matches(regex)||pom.length()<2) {
+                if (!pom.matches(regex)) {
                     valid=false;
                     throw new InputDoesNotMatchToRegex();
                 }
@@ -115,6 +121,18 @@ public interface DataValidation {
             }
         }//while
         return pom;
+    }//IntgersAndCommas
 
-    }
+    static String xlsFilePath() throws IOException {
+       String path;
+       Scanner input=new Scanner(System.in);
+       path= input.nextLine();
+        File file=new File(path);
+      //  System.out.println(Others.getFileType(path));
+       //if (/*!file.exists()||file.canWrite()||*/ Others.getFileType(path).equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+         //   throw new IOException();
+        //}
+       return path;
+    }//xlsFilePath
+
 }
