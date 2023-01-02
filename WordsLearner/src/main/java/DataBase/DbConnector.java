@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class DbConnector extends Row {
     private final static String DB_URL="jdbc:sqlite:Words";//adres URL bazy
 
-    static Connection conn;//do przechwytywania connection
+    public static Connection conn;//do przechwytywania connection
 
     //metoda do nawiązywania połączenia z bazą danych
     public static Connection connect(){
