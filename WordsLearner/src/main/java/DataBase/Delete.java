@@ -3,37 +3,37 @@ package DataBase;
 import DataValidation.DataValidation;
 import Exceptions.IncorrectValue;
 import Others.Others;
+import com.diogonunes.jcolor.Attribute;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+
+import static com.diogonunes.jcolor.Ansi.colorize;
 
 public class Delete extends Select{
 
     //metoda do usuwania pojedynczego wiersza
     public static void deleteRow(String tableName){
         int Id=0;//ID wiersza
-        int i=1;//klucz HashMap
         HashMap<Integer,Integer> map=Select.IdToHashMap(tableName);
         showAllWordsWithIncrementedID(tableName);
         try {
-            System.out.println("Podaj numer rekordu który chcesz usunąć");
+            System.out.print("Podaj numer rekordu który chcesz usunąć: ");
             Id= DataValidation.IntValidation(0,9999);
             if (map.containsKey(Id)){
                 String deleteStr = "DELETE FROM "+tableName+" WHERE rowid=?";
-                Statement stmt = conn.createStatement();
                 PreparedStatement preparedStatement = conn.prepareStatement(deleteStr);
                 preparedStatement.setInt(1,map.get(Id));
                 preparedStatement.executeUpdate();
             }else {
-                System.out.println("Nie ma rekordu o podanym ID");
+                System.out.println(colorize("Nie ma rekordu o podanym ID", Attribute.RED_TEXT()));
             }
         }catch (SQLException e){
             try{
                 conn.rollback();
-                System.out.println("Wycofano wprowadzone zmiany");
+                System.out.println(colorize("Wycofano wprowadzone zmiany",Attribute.RED_TEXT()));
             }catch (SQLException ignored){
             }
         }
@@ -51,20 +51,18 @@ public class Delete extends Select{
                 arrOfStr = Others.keysToValues(arrOfStr, map);//w tablei arrOfStr klucze mapy podmieniane są na Values mapy
                 In = Others.strArrayToStringSepByCommas(arrOfStr);//zapisywane są do string wartości z arrOfStr i oddzielane przecinkami
                 String deleteStr = "DELETE FROM " + tableName + " WHERE rowid IN("+In+")";// tworzone jest zapytanie SQL
-                Statement stmt = conn.createStatement();
                 PreparedStatement preparedStatement = conn.prepareStatement(deleteStr);
-               // preparedStatement.setString(0, In);
                 preparedStatement.executeUpdate();
             } else throw new IncorrectValue();
         }catch (SQLException e){
             e.printStackTrace();
-            System.out.println("Błąd bazy danych");
+            System.out.println(colorize("Błąd bazy danych",Attribute.RED_TEXT()));
             try{
                 conn.rollback();
-                System.out.println("Wycofano zmiany");
+                System.out.println(colorize("Wycofano zmiany",Attribute.RED_TEXT()));
             }catch (SQLException ignored){}
         }catch (IncorrectValue e){
-            System.out.println("Nie ma rekordu o podanym ID");
+            System.out.println(colorize("Nie ma rekordu o podanym ID",Attribute.RED_TEXT()));
         }
     }//deleteRowInRange
 

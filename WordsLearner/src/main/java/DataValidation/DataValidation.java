@@ -1,18 +1,16 @@
 package DataValidation;
 
-import Excel.Excel;
 import Exceptions.IncorrectValue;
 import Exceptions.InputDoesNotMatchToRegex;
-import Others.Others;
+import com.diogonunes.jcolor.Attribute;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public interface DataValidation extends Others {
+import static com.diogonunes.jcolor.Ansi.colorize;
+
+public interface DataValidation  {
 
     static byte ByteValidation(byte min,byte max) {
         byte num = 0;
@@ -24,11 +22,11 @@ public interface DataValidation extends Others {
                 valid=true;
                 if (num<min||num>max) throw new IncorrectValue();
             } catch (InputMismatchException e) {
-                System.out.println("Wartość musi być liczbą w zakresie "+min+"-"+max);
+                System.out.println(colorize("Wartość musi być liczbą w zakresie "+min+"-"+max, Attribute.RED_TEXT()));
                 input.next();
                 continue;
             }catch (IncorrectValue e){
-                System.out.println("Wartość musi być w zakresie "+min+"-"+max);
+                System.out.println(colorize("Wartość musi być w zakresie "+min+"-"+max,Attribute.RED_TEXT()));
                 //input.next();
                 continue;
             }
@@ -46,11 +44,11 @@ public interface DataValidation extends Others {
                 valid=true;
                 if (num<min||num>max) throw new IncorrectValue();
             } catch (InputMismatchException e) {
-                System.out.println("Wartość musi być liczbą");
+                System.out.println(colorize("Wartość musi być liczbą w zakresie " +min+"-"+max,Attribute.RED_TEXT()));
                 input.next();
                 continue;
             }catch (IncorrectValue e){
-                System.out.println("Wartość musi być w zakresie "+min+"-"+max);
+                System.out.println(colorize("Wartość musi być w zakresie "+min+"-"+max,Attribute.RED_TEXT()));
                 //input.next();
                 continue;
             }
@@ -72,7 +70,7 @@ public interface DataValidation extends Others {
                     throw new InputDoesNotMatchToRegex();
                 }
             } catch (InputDoesNotMatchToRegex e) {
-                System.out.println("Podana wartosć nie może zawierać liczb, znaków interpunkcyjnych ani znaków specjalnych");
+                System.out.println(colorize("Podana wartosć nie może zawierać liczb, znaków interpunkcyjnych ani znaków specjalnych",Attribute.RED_TEXT()));
                 //input.next();
                 continue;
             }
@@ -93,7 +91,7 @@ public interface DataValidation extends Others {
                     throw new InputDoesNotMatchToRegex();
                 }
             } catch (InputDoesNotMatchToRegex e) {
-                System.out.println("Podana wartosć nie może zawierać liczb, znaków interpunkcyjnych ani znaków specjalnych");
+                System.out.println(colorize("Podana wartosć nie może zawierać liczb, znaków interpunkcyjnych ani znaków specjalnych",Attribute.RED_TEXT()));
                 //input.next();
                 continue;
             }
@@ -115,7 +113,7 @@ public interface DataValidation extends Others {
                     throw new InputDoesNotMatchToRegex();
                 }
             } catch (InputDoesNotMatchToRegex e) {
-                System.out.println("Podana wartosć może jedynie zawierać liczby oddzielone przecinkami");
+                System.out.println(colorize("Podana wartosć może jedynie zawierać liczby oddzielone przecinkami",Attribute.RED_TEXT()));
                 //input.next();
                 continue;
             }
@@ -127,11 +125,6 @@ public interface DataValidation extends Others {
        String path;
        Scanner input=new Scanner(System.in);
        path= input.nextLine();
-        File file=new File(path);
-      //  System.out.println(Others.getFileType(path));
-       //if (/*!file.exists()||file.canWrite()||*/ Others.getFileType(path).equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
-         //   throw new IOException();
-        //}
        return path;
     }//xlsFilePath
 

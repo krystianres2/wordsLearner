@@ -2,6 +2,7 @@ package Excel;
 
 import DataBase.DbConnector;
 import DataValidation.DataValidation;
+import com.diogonunes.jcolor.Attribute;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -18,9 +19,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
 
+import static com.diogonunes.jcolor.Ansi.colorize;
+
 
 public class Excel extends DbConnector implements DataValidation ,ExcelOther {
-   // public static String excelFilePath="C:\\Users\\kryst\\OneDrive\\Pulpit\\testXLS2.xlsx";
 
     public void importFromXLS(String tableName) {
         try {
@@ -48,31 +50,28 @@ public class Excel extends DbConnector implements DataValidation ,ExcelOther {
                         case 0:
                             String name1 = nextCell.getStringCellValue();
                             statement.setString(1, name1);
-                            System.out.println(name1);
                             break;
                         case 1:
                             String name2 = nextCell.getStringCellValue();
                             statement.setString(2, name2);
-                            System.out.println(name2);
                     }//switch
                 }
                 statement.addBatch();
             }
             workbook.close();
             statement.executeBatch();
-
+            System.out.println("Pomyślnie zaimportowano");
 
         }catch (IOException e){
-            System.out.println("Błąd w trakcie wcztywania pliku");
+            System.out.println(colorize("Błąd w trakcie wcztywania pliku", Attribute.RED_TEXT()));
             e.printStackTrace();
 
         }catch (SQLException e){
-            System.out.println("Błąd bazy danych");
+            System.out.println(colorize("Błąd bazy danych",Attribute.RED_TEXT()));
             e.printStackTrace();
             try{
                 conn.rollback();
-            }catch (SQLException ex){
-                ex.printStackTrace();
+            }catch (SQLException ignored){
             }
         }
 
@@ -101,12 +100,13 @@ public class Excel extends DbConnector implements DataValidation ,ExcelOther {
             workbook.close();
 
             statement.close();
+            System.out.println("Pomyślnie wyeksportowano");
 
         }catch (SQLException e){
-            System.out.println("Błąd bazy danych");
+            System.out.println(colorize("Błąd bazy danych",Attribute.RED_TEXT()));
             e.printStackTrace();
         }catch (IOException e){
-            System.out.println("Błąd pliku");
+            System.out.println(colorize("Błąd pliku",Attribute.RED_TEXT()));
             e.printStackTrace();
         }
     }//export

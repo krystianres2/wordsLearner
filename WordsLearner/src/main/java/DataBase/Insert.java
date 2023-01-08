@@ -1,10 +1,13 @@
 package DataBase;
 
 import DataValidation.DataValidation;
+import com.diogonunes.jcolor.Attribute;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import static com.diogonunes.jcolor.Ansi.colorize;
 
 public class Insert extends Select implements DataValidation {
     public static void insertRow(String tableName) {
@@ -12,7 +15,7 @@ public class Insert extends Select implements DataValidation {
         String wordENG="";
         byte howMuchToInsert=0;
 
-        System.out.println("Ile słówek chcesz wstawić: ");
+        System.out.print("Ile słówek chcesz wstawić: ");
         howMuchToInsert=DataValidation.ByteValidation((byte) 1, (byte) 99);
         try {
             while (howMuchToInsert > 0) {
@@ -21,7 +24,6 @@ public class Insert extends Select implements DataValidation {
                 System.out.println("Podaj słowo po Angielsku: ");
                 wordENG = DataValidation.StringEngValidation();
                 String insertStr = "INSERT INTO " + tableName + " VALUES (?,?)";
-                Statement stmt = conn.createStatement();
                 PreparedStatement preparedStatement = conn.prepareStatement(insertStr);
                 preparedStatement.setString(1, wordPL);
                 preparedStatement.setString(2, wordENG);
@@ -29,11 +31,12 @@ public class Insert extends Select implements DataValidation {
 
                 howMuchToInsert--;
             }//while
+            System.out.println("Pomyślnie dodano słówka");
         }catch (SQLException e){
-            System.out.println("Error");
+            System.out.println(colorize("Błąd bazy danych", Attribute.RED_TEXT()));
             try {
                 conn.rollback();
-                System.out.println("Wycofano wprowadzone zmiany");
+                System.out.println(colorize("Wycofano wprowadzone zmiany",Attribute.RED_TEXT()));
             }catch (SQLException ignored){}
         }
     }//insertRow
