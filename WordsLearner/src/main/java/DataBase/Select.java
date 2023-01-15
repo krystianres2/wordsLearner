@@ -2,6 +2,7 @@ package DataBase;
 
 import Row.Row;
 import com.diogonunes.jcolor.Attribute;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,8 +26,9 @@ public class Select extends DbConnector implements QueryExecutor{
             System.out.println(colorize("Błąd bazy danych", Attribute.RED_TEXT()));
         }
         System.out.println();
-    }//showAllWords
-protected static HashMap<Integer,Integer> IdToHashMap(String tableName)  {//używane w delete
+    }//showAllWordsWithIncrementedID
+
+protected static @NotNull HashMap<Integer,Integer> IdToHashMapValue(String tableName)  {
     int i=1;//klucz HashMap
     HashMap<Integer,Integer> map=new HashMap<>();
     try {
@@ -39,7 +41,8 @@ protected static HashMap<Integer,Integer> IdToHashMap(String tableName)  {//uży
         System.out.println(colorize("Bład bazy danych",Attribute.RED_TEXT()));
     }
     return map;
-}//IdToHashMap
+}//IdToHashMapValue
+
     public static void showAllWordsWithRealID(String tableName) {
         try {
             ResultSet result = QueryExecutor.executeSelect("SELECT rowid, * FROM " +tableName);
@@ -52,7 +55,7 @@ protected static HashMap<Integer,Integer> IdToHashMap(String tableName)  {//uży
         }
     }//showAllWordsWithRealID
 
-    public static ArrayList<Row> saveToList(String tableName){
+    public static @NotNull ArrayList<Row> saveToList(String tableName){
         ArrayList<Row> list= new ArrayList<>();
         try {
             ResultSet result = QueryExecutor.executeSelect("SELECT * FROM " +tableName);

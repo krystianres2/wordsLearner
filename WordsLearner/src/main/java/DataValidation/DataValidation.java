@@ -3,8 +3,6 @@ package DataValidation;
 import Exceptions.IncorrectValue;
 import Exceptions.InputDoesNotMatchToRegex;
 import com.diogonunes.jcolor.Attribute;
-
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -27,7 +25,6 @@ public interface DataValidation  {
                 continue;
             }catch (IncorrectValue e){
                 System.out.println(colorize("Wartość musi być w zakresie "+min+"-"+max,Attribute.RED_TEXT()));
-                //input.next();
                 continue;
             }
         }//while
@@ -49,7 +46,6 @@ public interface DataValidation  {
                 continue;
             }catch (IncorrectValue e){
                 System.out.println(colorize("Wartość musi być w zakresie "+min+"-"+max,Attribute.RED_TEXT()));
-                //input.next();
                 continue;
             }
         }//while
@@ -71,12 +67,12 @@ public interface DataValidation  {
                 }
             } catch (InputDoesNotMatchToRegex e) {
                 System.out.println(colorize("Podana wartosć nie może zawierać liczb, znaków interpunkcyjnych ani znaków specjalnych",Attribute.RED_TEXT()));
-                //input.next();
                 continue;
             }
         }//while
         return pom;
     }//StringEngValidation
+
     static String StringPlValidation() {
         String pom="";
         String regex = "^(?=\\S)[\\p{L}\\s]*[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]?[\\p{L}\\s]*\\S$";
@@ -92,14 +88,13 @@ public interface DataValidation  {
                 }
             } catch (InputDoesNotMatchToRegex e) {
                 System.out.println(colorize("Podana wartosć nie może zawierać liczb, znaków interpunkcyjnych ani znaków specjalnych",Attribute.RED_TEXT()));
-                //input.next();
                 continue;
             }
         }//while
         return pom;
     }//StringEngValidation
 
-    static String IntegersAndCommas(){
+    static String IntegersAndCommasValidation(){
         String pom="";
         String regex = "^[0-9]+,[0-9]+([,][0-9]+)*$";
         Scanner input = new Scanner(System.in);
@@ -114,18 +109,17 @@ public interface DataValidation  {
                 }
             } catch (InputDoesNotMatchToRegex e) {
                 System.out.println(colorize("Podana wartosć może jedynie zawierać liczby oddzielone przecinkami",Attribute.RED_TEXT()));
-                //input.next();
                 continue;
             }
         }//while
         return pom;
-    }//IntgersAndCommas
+    }//IntegersAndCommasValidation
 
-    static String xlsFilePath() throws IOException {
+    static String xlsFilePathValidation() {
        String path;
        Scanner input=new Scanner(System.in);
        path= input.nextLine();
        return path;
-    }//xlsFilePath
+    }//xlsFilePathValidation
 
 }

@@ -17,7 +17,7 @@ public class Delete extends Select{
     //metoda do usuwania pojedynczego wiersza
     public static void deleteRow(String tableName){
         int Id=0;//ID wiersza
-        HashMap<Integer,Integer> map=Select.IdToHashMap(tableName);
+        HashMap<Integer,Integer> map=Select.IdToHashMapValue(tableName);
         showAllWordsWithIncrementedID(tableName);
         try {
             System.out.print("Podaj numer rekordu który chcesz usunąć: ");
@@ -39,15 +39,16 @@ public class Delete extends Select{
         }
     }//deleteRow
 
-    public static void deleteRowInRange(String tableName) {//dopracować//
+    //metoda do usuwania kilku rekordów na raz
+    public static void deleteRowInRange(String tableName) {
         String In;//IN(In)
         try {
-            HashMap<Integer, Integer> map = IdToHashMap(tableName);//Do Values zapisywane są ID tabeli a do Key wartość od 1 inkrementowana
+            HashMap<Integer, Integer> map = IdToHashMapValue(tableName);//Do Values zapisywane są ID tabeli a do Key wartość od 1 inkrementowana
             showAllWordsWithIncrementedID(tableName);//wyświetlane są wiersze:  i++. wordPL wordENG
             System.out.println("Podaj numery ID rekordów które chcesz usunąć oddzielając je przecinkiem");
-            In = DataValidation.IntegersAndCommas();//zapisywany i walidowany jest ciąg liczb odzielonych przecinkami
+            In = DataValidation.IntegersAndCommasValidation();//zapisywany i walidowany jest ciąg liczb odzielonych przecinkami
             String[] arrOfStr = In.split(",", 0);//liczby zapisywane są do tablicy
-            if (Others.MapContainsArray(arrOfStr, map)) {//jeśli HashMapa map zawiera w swoich Keys wszytkie wartości z tablicy arrOfStr
+            if (Others.CheckIfMapContainsArray(arrOfStr, map)) {//jeśli HashMapa map zawiera w swoich Keys wszytkie wartości z tablicy arrOfStr
                 arrOfStr = Others.keysToValues(arrOfStr, map);//w tablei arrOfStr klucze mapy podmieniane są na Values mapy
                 In = Others.strArrayToStringSepByCommas(arrOfStr);//zapisywane są do string wartości z arrOfStr i oddzielane przecinkami
                 String deleteStr = "DELETE FROM " + tableName + " WHERE rowid IN("+In+")";// tworzone jest zapytanie SQL
