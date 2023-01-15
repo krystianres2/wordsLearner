@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,7 +28,7 @@ public class Excel extends DbConnector implements DataValidation ,ExcelOther {
     public void importFromXLS(String tableName) {
         try {
             System.out.println("Podaj ścieżkę dostępu do pliku. Pamiętaj aby podfoldery rodzielać za pomocą \\");
-            String path=DataValidation.xlsFilePath();//ścieżka do pliku xls
+            String path=DataValidation.xlsFilePathValidation();//ścieżka do pliku xls
             FileInputStream inputStream = new FileInputStream(path);
 
             Workbook workbook = new XSSFWorkbook(inputStream);
@@ -64,11 +65,9 @@ public class Excel extends DbConnector implements DataValidation ,ExcelOther {
 
         }catch (IOException e){
             System.out.println(colorize("Błąd w trakcie wcztywania pliku", Attribute.RED_TEXT()));
-            e.printStackTrace();
 
         }catch (SQLException e){
             System.out.println(colorize("Błąd bazy danych",Attribute.RED_TEXT()));
-            e.printStackTrace();
             try{
                 conn.rollback();
             }catch (SQLException ignored){
@@ -79,7 +78,7 @@ public class Excel extends DbConnector implements DataValidation ,ExcelOther {
 
 
     //export to XLS
-    public void exportToXls(String tableName){
+    public void exportToXls(@NotNull String tableName){
         String excelFilePath=getFileName(tableName.concat("_Export"));
         try{
             String sql="SELECT rowid, * FROM ".concat(tableName);
@@ -104,10 +103,8 @@ public class Excel extends DbConnector implements DataValidation ,ExcelOther {
 
         }catch (SQLException e){
             System.out.println(colorize("Błąd bazy danych",Attribute.RED_TEXT()));
-            e.printStackTrace();
         }catch (IOException e){
             System.out.println(colorize("Błąd pliku",Attribute.RED_TEXT()));
-            e.printStackTrace();
         }
     }//export
 

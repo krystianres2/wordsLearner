@@ -10,6 +10,7 @@ import java.sql.Statement;
 import static com.diogonunes.jcolor.Ansi.colorize;
 
 public class Insert extends Select implements DataValidation {
+
     public static void insertRow(String tableName) {
         String wordPL="";
         String wordENG="";

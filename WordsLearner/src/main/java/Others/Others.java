@@ -2,6 +2,7 @@ package Others;
 
 import DataValidation.DataValidation;
 import com.diogonunes.jcolor.Attribute;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 import static com.diogonunes.jcolor.Ansi.colorize;
 
 public interface Others extends DataValidation {
-    static boolean MapContainsArray(String @NotNull [] tab, HashMap<Integer,Integer> map){
+    static boolean CheckIfMapContainsArray(String @NotNull [] tab, HashMap<Integer,Integer> map){
         boolean hasAllKeys = true;
         int[] intArray = new int[tab.length];
 
@@ -27,17 +28,18 @@ public interface Others extends DataValidation {
             }
         }
         return hasAllKeys && tab.length >= 1;
-    }//MapContainsArray
+    }//CheckIfMapContainsArray
 
-    static String[] integerToArray(Integer @NotNull []intArray){
+    @Contract(pure = true)
+    static String @NotNull [] integerArrayToStringArray(Integer @NotNull []intArray){
         String[] strArray = new String[intArray.length];
         for (int i = 0; i < intArray.length; i++) {
             strArray[i] = intArray[i].toString();
         }
         return strArray;
-    }//integerToArray
+    }//integerArrayToStringArray
 
-    static String[] keysToValues(String @NotNull []tab, HashMap<Integer,Integer> map){
+    static String @NotNull [] keysToValues(String @NotNull []tab, HashMap<Integer,Integer> map){
         Integer[] values = new Integer[tab.length];//docelowa tablica z wartościami
         int[] keys = new int[tab.length];//przechowuje tab przekonwertowane na int
 
@@ -47,10 +49,10 @@ public interface Others extends DataValidation {
         for (int i = 0; i < keys.length; i++) {//zapisywanie wartości do values
             values[i] = map.get(keys[i]);
         }
-        return integerToArray(values);
+        return integerArrayToStringArray(values);
     }//keysToValues
 
-    static String strArrayToStringSepByCommas(String @NotNull []strArray){//funkcja rozdziela elementy tablicy przecinkiem i zapisuje je do String
+    static @NotNull String strArrayToStringSepByCommas(String @NotNull []strArray){//funkcja rozdziela elementy tablicy przecinkiem i zapisuje je do String
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < strArray.length; i++) {
             sb.append(strArray[i]);
@@ -112,15 +114,17 @@ public interface Others extends DataValidation {
         System.out.println();
         System.out.println("-----------------------------");
         System.out.println();
-    }
+    }//displayMenu
+
     static void displayDeleteSubMenu(){
         System.out.println("1. Usun pojedynczy wiersz");
         System.out.println("2. Usun więcej wierszy");
         System.out.println();
-    }
+    }//displayDeleteSubMenu
+
     static void next(){
         Scanner input=new Scanner(System.in);
         input.nextLine();
-    }
+    }//next
 
 }

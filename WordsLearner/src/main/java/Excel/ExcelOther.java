@@ -3,6 +3,7 @@ package Excel;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,27 +20,27 @@ import java.util.Set;
 
 public interface ExcelOther {
 
-     default String getFileName(String baseName){
+     default String getFileName(@NotNull String baseName){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String dateTimeInfo = dateFormat.format(new Date());
         return baseName.concat(String.format("_%s.xlsx", dateTimeInfo));
     }//getFileName
 
-     default void writeHeaderLine(ResultSet result, XSSFSheet sheet) throws SQLException {
-        // write header line containing column names
+     default void writeHeaderLine(@NotNull ResultSet result, @NotNull XSSFSheet sheet) throws SQLException {
+         // wypisywanie header line z nazwami kolumn
         ResultSetMetaData metaData = result.getMetaData();
         int numberOfColumns = metaData.getColumnCount();
 
         Row headerRow = sheet.createRow(0);
 
-        // exclude the first column which is the ID field
+         //pomiń kolumne z ID
         for (int i = 2; i <= numberOfColumns; i++) {
             String columnName = metaData.getColumnName(i);
             Cell headerCell = headerRow.createCell(i - 2);
             headerCell.setCellValue(columnName);
         }
     }//writeHeaderLine
-     default void writeDataLines(ResultSet result, XSSFWorkbook workbook, XSSFSheet sheet) throws SQLException{
+     default void writeDataLines(@NotNull ResultSet result, XSSFWorkbook workbook, XSSFSheet sheet) throws SQLException{
         ResultSetMetaData metaData= result.getMetaData();
         int numberOfColumns = metaData.getColumnCount();
 
@@ -67,8 +68,7 @@ public interface ExcelOther {
         }//while
     }//writeDataLines
 
-    //ustanawia format daty
-     default void formatDateCell(XSSFWorkbook workbook, Cell cell){
+     default void formatDateCell(@NotNull XSSFWorkbook workbook, @NotNull Cell cell){
         CellStyle cellStyle = workbook.createCellStyle();
         CreationHelper creationHelper = workbook.getCreationHelper();
         cellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
@@ -76,9 +76,7 @@ public interface ExcelOther {
     }//formatDateCell
 
 
-    //zwraca liczbe wierszy w każdej kolumnie
-    private static int[] rowsInEachColumn(String excelFilePath) throws IOException {
-
+    private static int @NotNull [] rowsInEachColumn(String excelFilePath) throws IOException {
         InputStream is = new FileInputStream(excelFilePath);
         Workbook wb = WorkbookFactory.create(is);
         Sheet sheet = wb.getSheetAt(0);
@@ -98,9 +96,8 @@ public interface ExcelOther {
         }
         is.close();
         return dataCount;
-    }//excelReader
+    }//rowsInEachColumn
 
-    //zwraca prawdę jeśli wszytkie elementy są sobie równe
      private static boolean checkIfNumOfRowsEqual(String excelFilePath) throws IOException {
         int[]array=rowsInEachColumn(excelFilePath);
         Set<Integer> Set=new HashSet<>();
@@ -108,9 +105,10 @@ public interface ExcelOther {
             Set.add(element);
         }
          return Set.size() == 1;
-    }//checkIfAllElementsEqual
+    }//checkIfNumOfRowsEqual
 
-     static void checkSheet(Sheet sheet,String path) throws IOException {
+    //metoda sprawdza poprawność pliku xls
+     static void checkSheet(@NotNull Sheet sheet, String path) throws IOException {
          int correctNumOfColumns=2;
          int noOfColumns = sheet.getRow(0).getPhysicalNumberOfCells();
          if (noOfColumns!=correctNumOfColumns||!checkIfNumOfRowsEqual(path)){
